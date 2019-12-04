@@ -197,9 +197,9 @@ timeouts.WriteTotalTimeoutConstant = 50;
 timeouts.WriteTotalTimeoutMultiplier = 10;
 
 if (!SetCommTimeouts(hSerial, &timeouts)) {
-		// Error set timeouts
-		printf("Error : Setting timeouts\n");
-	}
+	// Error set timeouts
+	printf("Error : Setting timeouts\n");
+}
 ```
 
 참고:
@@ -209,13 +209,13 @@ if (!SetCommTimeouts(hSerial, &timeouts)) {
 * WriteFile(Handle, 데이터 버퍼, 쓸 바이트 수,실제로 쓰는 바이트 수로 설정할 정수의 포인터)
 ```
 DWORD dwBytesWrite = 0;
-	int writeSize = 10;
-	unsigned char str[11] = "S012345678"; //writeSize + 1 크기로 해야됨 -> 공백 안생김(공백은 stop bit)
-	while (1) {
-		if (WriteFile(hSerial, str, writeSize, &dwBytesWrite, NULL)) {
-			// Write Complete
-		}
+int writeSize = 10;
+unsigned char str[11] = "S012345678"; //writeSize + 1 크기로 해야됨 -> 공백 안생김(공백은 stop bit)
+while (1) {
+	if (WriteFile(hSerial, str, writeSize, &dwBytesWrite, NULL)) {
+		// Write Complete
 	}
+}
 ```
 
 #### 5-2. Recieve
@@ -223,37 +223,37 @@ DWORD dwBytesWrite = 0;
 * ReadFile(Handle, 데이터 저장 버퍼, 읽을 바이트 수,실제로 읽은 바이트 수로 설정할 정수의 포인터)
 ```
 DWORD dwBytesRead = 0;
-	int readSize = 10;
-	unsigned char buff[10];
-	unsigned char T_buff[10];
-	int start = 0, index = 0;;
-	
-	if (ReadFile(hSerial, buff, readSize, &dwBytesRead, NULL)) {
-		for (int i = 0; i < 10; i++) {
-			printf("%c ", buff[i]);    // Print data sample
-		}
-		printf("\n");
-	}
-	//시작점 잡기
+int readSize = 10;
+unsigned char buff[10];
+unsigned char T_buff[10];
+int start = 0, index = 0;;
+
+if (ReadFile(hSerial, buff, readSize, &dwBytesRead, NULL)) {
 	for (int i = 0; i < 10; i++) {
-		if (buff[i] == 'S') {
-			start = i;
-			break;
-		}
+		printf("%c ", buff[i]);    // Print data sample
 	}
-	//시작점 기준으로 원본 데이터 찾기
-	if (start != 9) {
-		for (int i = start+1; i < 10; i++) {
-			T_buff[index++] = buff[i];
-		}
+	printf("\n");
+}
+//시작점 잡기
+for (int i = 0; i < 10; i++) {
+	if (buff[i] == 'S') {
+		start = i;
+		break;
 	}
-	for (int i = 0; i < start+1; i++) {
+}
+//시작점 기준으로 원본 데이터 찾기
+if (start != 9) {
+	for (int i = start+1; i < 10; i++) {
 		T_buff[index++] = buff[i];
 	}
-	for (int i = 0; i < 10; i++) {
-		printf("%c ", T_buff[i]);    // Print data sample
-	}
-	printf("\n"); 
+}
+for (int i = 0; i < start+1; i++) {
+	T_buff[index++] = buff[i];
+}
+for (int i = 0; i < 10; i++) {
+	printf("%c ", T_buff[i]);    // Print data sample
+}
+printf("\n"); 
 ```
 
 #### 5-3. Closing
