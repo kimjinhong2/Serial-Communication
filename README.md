@@ -1,5 +1,4 @@
 # 통신
-## 라즈베리 파이 설정
 
 ### 1. 이미지와 같이 알맞게 연결
 ![connection](https://user-images.githubusercontent.com/48484742/70028240-78690a80-15e7-11ea-9091-35751f521c7a.JPG)
